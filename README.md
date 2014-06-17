@@ -7,7 +7,7 @@ Currently, only Google Chrome meets these criteria.
 
 ## Testing the player
 
-The player can be tested by visiting `http://live-dash.herokuapp.com`.
+The player can be tested by visiting http://peer-dash.herokuapp.com.
 Use the pre-loaded manifest address and press load.
 Open up another tab and see how the two clients cooperate.
 
@@ -38,4 +38,4 @@ Modify `PeerDashConfiguration.js` to change the addresses to these servers.
 1. [Install node.js](http://nodejs.org/)
 2. Install Connect: `npm install`
 3. Start the file server: `npm start`
-4. Visit `http://localhost:5000` from Chrome
+4. Visit http://localhost:5000 from Chrome
