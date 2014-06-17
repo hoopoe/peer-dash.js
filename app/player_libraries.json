@@ -15,6 +15,14 @@
         {
             "name": "jasmine",
             "link": "http://pivotal.github.io/jasmine/"
+        },
+        {
+            "name": "PeerJS",
+            "link": "http://peerjs.com/"
+        },
+        {
+            "name": "Underscore.js",
+            "link": "http://underscorejs.org/"
         }
     ]
 }

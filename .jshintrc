@@ -27,5 +27,9 @@
         "MSMediaKeys",
         "MediaKeys",
         "Caster",
-        "TextTrackCue"]
+        "TextTrackCue",
+        "PeerDash",
+        "Peer",
+        "util",
+        "_"]
 }

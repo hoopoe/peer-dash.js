@@ -21,10 +21,12 @@ MediaPlayer.dependencies.SchedulerExtensions.prototype = {
     getExecuteInterval: function(context) {
         var interval = 1000;
 
-        if (typeof(context.getMinBufferTime) !== "undefined") {
-            interval = (context.getMinBufferTime() * 1000.0) / 4;
-            interval = Math.max(interval, 1000);
-        }
+        // FIXME: Set this to segment duration instead
+
+        // if (typeof(context.getMinBufferTime) !== "undefined") {
+        //     interval = (context.getMinBufferTime() * 1000.0) / 4;
+        //     interval = Math.max(interval, 1000);
+        // }
 
         return interval;
     },

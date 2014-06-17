@@ -78,6 +78,7 @@ MediaPlayer = function (aContext) {
             streamController.setVideoModel(videoModel);
             streamController.setAutoPlay(autoPlay);
             streamController.load(source);
+            this.segmentManager.setVideoModel(videoModel);
 
             system.mapValue("scheduleWhilePaused", scheduleWhilePaused);
             system.mapOutlet("scheduleWhilePaused", "stream");
@@ -107,6 +108,10 @@ MediaPlayer = function (aContext) {
         metricsExt: undefined,
         bufferExt: undefined,
         errHandler: undefined,
+
+        segmentManager: undefined,
+        neighbourManager: undefined,
+        closePeerExplorationManager: undefined,
 
         addEventListener: function (type, listener, useCapture) {
             this.eventBus.addEventListener(type, listener, useCapture);

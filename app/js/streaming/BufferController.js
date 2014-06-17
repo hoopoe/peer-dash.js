@@ -533,7 +533,7 @@ MediaPlayer.dependencies.BufferController = function () {
                 // request can be null because it is out of the generated list of request. In this case we need to
                 // update the list and the segmentAvailabilityRange
                 currentRepresentation.segments = null;
-                currentRepresentation.segmentAvailabilityRange = {start: searchTime - liveEdgeSearchStep, end: searchTime + liveEdgeSearchStep};
+                currentRepresentation.segmentAvailabilityRange = {start: searchTime - 2 * liveEdgeSearchStep, end: searchTime};
                 // try to get request object again
                 self.indexHandler.getSegmentRequestForTime(currentRepresentation, searchTime).then(findLiveEdge.bind(self, searchTime, onSuccess, onError));
             } else {
@@ -868,6 +868,7 @@ MediaPlayer.dependencies.BufferController = function () {
                 stalled = true;
                 waitingForBuffer = true;
                 self.videoModel.stallStream(type, stalled);
+                self.stats.reportDryBuffer(type);
             }
 
             if (state === READY) {
@@ -955,6 +956,7 @@ MediaPlayer.dependencies.BufferController = function () {
         system: undefined,
         errHandler: undefined,
         scheduleWhilePaused: undefined,
+        stats: undefined,
 
         initialize: function (type, periodInfo, data, buffer, videoModel, scheduler, fragmentController, source) {
             var self = this,
@@ -979,7 +981,7 @@ MediaPlayer.dependencies.BufferController = function () {
                     searchForLiveEdge.call(self).then(
                         function(liveEdgeTime) {
                             // step back from a found live edge time to be able to buffer some data
-                            var startTime = Math.max((liveEdgeTime - minBufferTime), currentRepresentation.segmentAvailabilityRange.start),
+                            var startTime = Math.max((liveEdgeTime - Math.max(minBufferTime, manifest.suggestedPresentationDelay)), currentRepresentation.segmentAvailabilityRange.start),
                                 segmentStart;
                             // get a request for a start time
                             self.indexHandler.getSegmentRequestForTime(currentRepresentation, startTime).then(function(request) {

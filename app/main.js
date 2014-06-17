@@ -132,6 +132,10 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
     $scope.audioRatioCount = 0;
     $scope.audioRatio = "";
 
+    $scope.nbCount = 0;
+    $scope.fromPeersCount = 0;
+    $scope.fromServerCount = 0;
+
     var converter = new MetricsTreeConverter();
     $scope.videoMetrics = null;
     $scope.audioMetrics = null;
@@ -274,6 +278,32 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
         }
     }
 
+    function getPeerMetrics() {
+        return player.segmentManager.getMetrics();
+    }
+
+    function getGlobalStats() {
+        return player.segmentManager.commonData.globalStats;
+    }
+
+    function renderNeighbours() {
+        $scope.selfId = player.segmentManager.getSelfId();
+        $scope.coord = player.segmentManager.vivaldiCoordinate.coord();
+        $scope.outboundPeers = player.neighbourManager.getOutboundPeers().sort(function(a, b) { return a.id > b.id; } );
+        $scope.opLength = $scope.outboundPeers.length;
+
+
+        $scope.inboundPeers = player.neighbourManager.getInboundPeers();
+        $scope.ipLength = $scope.inboundPeers.length;
+
+        $scope.closePeers = player.closePeerExplorationManager.peers();
+        $scope.cpLength = $scope.closePeers.length;
+
+        $scope.invalidateDisplay(true);
+        $scope.safeApply();
+    }
+
+
     function metricChanged(e) {
         var metrics,
             point,
@@ -341,6 +371,13 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
             }
         }
 
+        metrics = getPeerMetrics();
+        if (metrics) {
+            $scope.nbCount = metrics.nbCount;
+            $scope.fromPeersCount = metrics.fromPeersCount;
+            $scope.fromServerCount = metrics.fromServerCount;
+        }
+
         $scope.invalidateDisplay(true);
         $scope.safeApply();
     }
@@ -380,6 +417,26 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
         }
     ];
 
+    $scope.showOutboundPeers = true;
+    $scope.setOutboundPeers = function(show) {
+        $scope.showOutboundPeers = show;
+    };
+
+    $scope.showInboundPeers = true;
+    $scope.setInboundPeers = function(show) {
+        $scope.showInboundPeers = show;
+    };
+
+    $scope.showClosePeers = true;
+    $scope.setClosePeers = function(show) {
+        $scope.showClosePeers = show;
+    };
+
+    $scope.showGlobalStats = true;
+    $scope.setGlobalStats = function(show) {
+        $scope.showGlobalStats = show;
+    };
+
     $scope.showCharts = false;
     $scope.setCharts = function (show) {
         $scope.showCharts = show;
@@ -397,7 +454,7 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
     ////////////////////////////////////////
 
     video = document.querySelector(".dash-video-player video");
-    context = new Dash.di.DashContext();
+    context = new PeerDash.di.PeerDashContext();
     player = new MediaPlayer(context);
     $scope.version = player.getVersion();
 
@@ -408,13 +465,22 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
     player.attachView(video);
     player.setAutoPlay(true);
 
+    setInterval(function(){
+        // Neighbour set information
+        renderNeighbours();
+    },1000);
+
+    setInterval(function() {
+        $scope.globalStats = getGlobalStats();
+    }, 1000);
+
     ////////////////////////////////////////
     //
     // Player Methods
     //
     ////////////////////////////////////////
 
-    $scope.abrEnabled = true;
+    $scope.abrEnabled = false;
 
     $scope.setAbrEnabled = function (enabled) {
         $scope.abrEnabled = enabled;
@@ -440,6 +506,13 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
             newQuality = 0;
         }
         player.setQualityFor(type, newQuality);
+    }
+
+    $scope.peerEnabled = true;
+
+    $scope.setPeerEnabled = function(enabled) {
+        $scope.peerEnabled = enabled;
+        PeerDash.setEnable(enabled);
     }
 
     ////////////////////////////////////////
@@ -524,6 +597,7 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
     }
 
     $scope.doLoad = function () {
+        player.segmentManager.resetSegmentManager();
         player.attachSource($scope.selectedItem.url);
     }
 

@@ -24,7 +24,7 @@ MediaPlayer.dependencies.FragmentModel = function () {
         errorLoadingCallback,
         streamEndCallback,
 
-        LOADING_REQUEST_THRESHOLD = 2,
+        LOADING_REQUEST_THRESHOLD = 16,
 
         loadCurrentFragment = function(request) {
             var onSuccess,
@@ -39,6 +39,7 @@ MediaPlayer.dependencies.FragmentModel = function () {
                 executedRequests.push(request);
                 successLoadingCallback.call(context, request, response);
                 request.deferred = null;
+                self.executeCurrentRequest();
             };
 
             onError = function(request) {

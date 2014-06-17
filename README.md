@@ -1,27 +1,41 @@
-# dash.js
+# peer-dash.js
 
-A reference client implementation for the playback of MPEG DASH via JavaScript and compliant browsers. Learn more about DASH IF Reference Client.
+This is a peer assisted extension to the DASH IF Reference Client [dash.js](https://github.com/Dash-Industry-Forum/dash.js/).
+It enables peer assisted fetching of segments for live video.
+No plugins are needed to do this, only a modern browser which supports both Media Source Extensions and WebRTC.
+Currently, only Google Chrome meets these criteria.
 
-If your intent is to use the player code without contributing back to this project, then use the MASTER branch which holds the approved and stable public releases.
+## Testing the player
 
-If your goal is to improve or extend the code and contribute back to this project, then you should make your changes in, and submit a pull request against, the DEVELOPMENT branch. Read through our wiki section on https://github.com/Dash-Industry-Forum/dash.js/wiki/How-to-Contribute for a walk-through of the contribution process.
+The player can be tested by visiting `http://live-dash.herokuapp.com`.
+Use the pre-loaded manifest address and press load.
+Open up another tab and see how the two clients cooperate.
 
-All new work should be in the development branch.  Master is now reserved to tag builds.
+The player has a few but very important dependencies but as long as we have our services running, you can utilize them for trying out the player.
 
-## Quick Start
+* The player depends on a PeerJS server to help peers connect to each other through WebRTC, i.e. helping in finding the IP address to another peer. This server does also provide a peer with an ID.
 
-Download 'master' or latest tagged release, extract and open main folder dash.js/index.html in your web browser to view the main test file.
+    Source: https://github.com/JYZR/peerjs-server
 
-### Install Dependencies
-1. [install nodejs](http://nodejs.org/)
-2. [install grunt](http://gruntjs.com/getting-started)
-    * npm install -g grunt-cli
-3. [install grunt-template-jasmine-istanbul](https://github.com/maenu/grunt-template-jasmine-istanbul)
-    * npm install grunt-template-jasmine-istanbul --save-dev
-4. install some other dependencies:
-    * npm install grunt-contrib-connect grunt-contrib-watch grunt-contrib-jshint grunt-contrib-uglify
+* The player also depends on a bootstrap server from which it gets its initial set of peers.
 
-### Build / Run tests:
-```
-grunt --config Gruntfile.js --force
-```
+    Source: https://github.com/JYZR/peer-dash.js-bootstrap
+
+* Another server collects statistics and presents the performance over the last 10 seconds.
+
+	Source: https://github.com/JYZR/peer-dash.js-stats
+
+* The live stream is set up with a static file server at the back but proxied through a server which lets clients find the live edge by sending 404 response for "future" segments.
+
+	Source: https://github.com/JYZR/live-dash-server
+
+* *Bandwith test*
+
+Modify `PeerDashConfiguration.js` to change the addresses to these servers.
+
+## Start a static file server locally
+
+1. [Install node.js](http://nodejs.org/)
+2. Install Connect: `npm install`
+3. Start the file server: `npm start`
+4. Visit `http://localhost:5000` from Chrome

@@ -763,6 +763,7 @@ Dash.dependencies.DashHandler = function () {
             request.wallStartTime = segment.wallStartTime;
             request.quality = representation.index;
             request.index = segment.availabilityIdx;
+            request.repId = representation.id;
 
             return Q.when(request);
         },

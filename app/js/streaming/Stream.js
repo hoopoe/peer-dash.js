@@ -490,11 +490,15 @@ MediaPlayer.dependencies.Stream = function () {
 
         onPlay = function () {
             //this.debug.log("Got play event.");
+            // NOTE: Listener for play!
+            this.neighbourManager.play();
             updateCurrentTime.call(this);
         },
 
         onPause = function () {
             //this.debug.log("Got pause event.");
+            // NOTE: Listener for pause!
+            this.neighbourManager.pause();
             suspend.call(this);
         },
 
@@ -609,6 +613,7 @@ MediaPlayer.dependencies.Stream = function () {
             }
         },
 
+        // NOTE: Used to catch up to live edge?
         updateCurrentTime = function() {
             if (this.videoModel.isPaused()) return;
 
@@ -802,6 +807,7 @@ MediaPlayer.dependencies.Stream = function () {
         timelineConverter: undefined,
         requestScheduler: undefined,
         scheduleWhilePaused: undefined,
+        neighbourManager: undefined,
 
         setup: function () {
             this.system.mapHandler("setCurrentTime", undefined, currentTimeChanged.bind(this));
