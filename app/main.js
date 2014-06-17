@@ -2,35 +2,35 @@
 
 angular.module('DashSourcesService', ['ngResource']).
     factory('Sources', function($resource){
-        return $resource('app/sources.json', {}, {
+        return $resource('sources.json', {}, {
             query: {method:'GET', isArray:false}
         });
     });
 
 angular.module('DashNotesService', ['ngResource']).
     factory('Notes', function($resource){
-        return $resource('app/notes.json', {}, {
+        return $resource('notes.json', {}, {
             query: {method:'GET', isArray:false}
         });
     });
 
 angular.module('DashContributorsService', ['ngResource']).
     factory('Contributors', function($resource){
-        return $resource('app/contributors.json', {}, {
+        return $resource('contributors.json', {}, {
             query: {method:'GET', isArray:false}
         });
     });
 
 angular.module('DashPlayerLibrariesService', ['ngResource']).
     factory('PlayerLibraries', function($resource){
-        return $resource('app/player_libraries.json', {}, {
+        return $resource('player_libraries.json', {}, {
             query: {method:'GET', isArray:false}
         });
     });
 
 angular.module('DashShowcaseLibrariesService', ['ngResource']).
     factory('ShowcaseLibraries', function($resource){
-        return $resource('app/showcase_libraries.json', {}, {
+        return $resource('showcase_libraries.json', {}, {
             query: {method:'GET', isArray:false}
         });
     });

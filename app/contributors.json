@@ -2,22 +2,22 @@
     "items": [
         {
             "name": "Digital Primates",
-            "logo": "app/img/dp.png",
+            "logo": "img/dp.png",
             "link": "http://www.digitalprimates.net"
         },
         {
             "name": "Microsoft Open Technologies",
-            "logo": "app/img/MSOpenTech.jpg",
+            "logo": "img/MSOpenTech.jpg",
             "link": "http://msopentech.com"
         },
         {
             "name": "YouTube",
-            "logo": "app/img/youtube.png",
+            "logo": "img/youtube.png",
             "link": "http://www.youtube.com"
         },
         {
             "name": "Akamai",
-            "logo": "app/img/akamai_ff.png",
+            "logo": "img/akamai_ff.png",
             "link": "http://www.akamai.com"
         },
         {
