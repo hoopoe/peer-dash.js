@@ -333,6 +333,10 @@ PeerDash.di.SegmentManager = function() {
                 var connectionHandlers = {};
                 connectionHandlers[self.connectionPool.label] = self.connectionPool.getConnectionHandler();
                 connectionHandlers[self.overlayController.label] = self.overlayController.getConnectionHandler();
+                connectionHandlers['AUTOMATION'] = function(conn) {
+                    //todo: change global flag heres
+                    logger.debug("AUTOMATION: Yes I can receive commands!!!: " + conn.peer);
+                };
                 return self.peerConnectionManager.init(connectionHandlers)
                     .fail(function(error) {
                         logger.error("Failure when opening connection to peer server: " + error);
