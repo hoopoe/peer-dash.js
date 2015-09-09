@@ -1,3 +1,3 @@
 $(document).ready(function() {
-    $('input').val('http://live-dash-server.herokuapp.com/manifest.mpd').trigger('input');
+    $('input').val('http://192.168.1.10/test.mpd').trigger('input');
 });
