@@ -334,8 +334,17 @@ PeerDash.di.SegmentManager = function() {
                 connectionHandlers[self.connectionPool.label] = self.connectionPool.getConnectionHandler();
                 connectionHandlers[self.overlayController.label] = self.overlayController.getConnectionHandler();
                 connectionHandlers['AUTOMATION'] = function(conn) {
-                    //todo: change global flag heres
-                    logger.debug("AUTOMATION: Yes I can receive commands!!!: " + conn.peer);
+                    conn.on('data', function(data){
+                        var mainScope = angular.element('body').scope();
+                        mainScope.selectedItem.url = data.channel;
+                        if (data.cmd === 'start') {
+                            mainScope.doLoad();
+                        }
+                        if (data.cmd === 'stop') {
+                            $('video')[0].pause();
+                        }
+                      });
+                    logger.debug("AUTOMATION req from: " + conn.peer);
                 };
                 return self.peerConnectionManager.init(connectionHandlers)
                     .fail(function(error) {
