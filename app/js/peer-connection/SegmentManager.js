@@ -337,10 +337,17 @@ PeerDash.di.SegmentManager = function() {
                     conn.on('data', function(data){
                         var mainScope = angular.element('body').scope();
                         mainScope.selectedItem.url = data.channel;
-                        if (data.cmd === 'start') {
+                        if (data.cmd === 'load') {
                             mainScope.doLoad();
                         }
+                        if (data.cmd === 'pause') {
+                            $('video')[0].pause();
+                        }
+                        if (data.cmd === 'play') {
+                            $('video')[0].play();
+                        }
                         if (data.cmd === 'stop') {
+                            //we have to some needed services here
                             $('video')[0].pause();
                         }
                       });
